@@ -11,7 +11,6 @@ public class permsCore {
     public static boolean check(MessageReceivedEvent event){
 
         for (Role r : event.getGuild().getMember(event.getAuthor()).getRoles()){
-
             if(Arrays.stream(STATIC.PERMS).parallel().anyMatch(r.getName()::contains))
                 return false;
             else
