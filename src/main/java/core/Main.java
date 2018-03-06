@@ -32,9 +32,9 @@ public class Main {
             .setAutoReconnect(true)
             .setStatus(OnlineStatus.ONLINE);
 
+
         loadCommands();
         loadListeners();
-
 
         try {
             jda = builder.buildBlocking();
