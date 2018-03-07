@@ -9,6 +9,6 @@ package util;
 
 public class SECRETS {
 
-    public static String TOKEN="hehexd";
+    public static String TOKEN="NDIwNjExMzE4MzI5MTE0NjI0.DYBPpQ.iNGl4IbrB2VfAz5IfVqUmFy6Sls";
 
 }
