@@ -1,9 +1,6 @@
 package core;
 
-import commands.cmdClear;
-import commands.cmdGif;
-import commands.cmdPing;
-import commands.cmdPoke;
+import commands.*;
 import listeners.commandListener;
 import listeners.readyListener;
 import net.dv8tion.jda.core.AccountType;
@@ -54,6 +51,9 @@ public class Main {
         commandHandler.commands.put("poke", new cmdPoke());
         commandHandler.commands.put("clear", new cmdClear());
         commandHandler.commands.put("gif",new cmdGif());
+        commandHandler.commands.put("poke",new cmdPoke());
+        commandHandler.commands.put("cat",new cmdCat());
+        commandHandler.commands.put("quote",new cmdQuote());
     }
 
     private static void loadListeners(){

@@ -3,6 +3,7 @@ package listeners;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import utils.MSGS;
 
 /**
  *
@@ -23,9 +24,7 @@ public class readyListener extends ListenerAdapter{
         System.out.println(out);
 
         for (Guild g : event.getJDA().getGuilds()){
-            g.getTextChannels().get(0).sendMessage(
-                    ":cherry_blossom:Shuvi-chan is now ready to serve you:cherry_blossom:"
-            ).queue();
+            g.getTextChannels().get(2).sendMessage(":cherry_blossom:Shuvi-chan is now ready to serve you:cherry_blossom:").queue();
         }
     }
 }
