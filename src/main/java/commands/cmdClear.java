@@ -4,85 +4,190 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import utils.MSGS;
+import utils.STATIC;
 
 import java.awt.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ *
+ *  @author Dârkness
+ *  @version 06.03.2018
+ *
+ */
+
 public class cmdClear implements Command {
 
-    EmbedBuilder error = new EmbedBuilder().setColor(Color.RED);
-
-    private int getInt(String string){
-        try{
-            return Integer.parseInt(string);
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
         return false;
     }
 
-    @Override
-    public void action(String[] args, MessageReceivedEvent event) {
+    public static String HELP = "USAGE: ` ~clear <amount ob messages (>2) || all || TIMESTAMP>  to clear an amount of chat messages`";
 
-        int numb = getInt(args[0]);
 
-        if(args.length < 1){
-            event.getTextChannel().sendMessage(
-                error.setDescription(":loudspeaker: Please enter a number of Messages you want to delete!").build()
-            ).queue();
-        }else if (args.length <=0){
-            event.getTextChannel().sendMessage(
-                    error.setDescription(":loudspeaker: Please enter a valid Number between 2 and 100!").build()
-            ).queue();
+    private int getInt(String arg) {
+
+        try {
+            return Integer.parseInt(arg);
+        } catch (Exception e) {
+            return 0;
         }
 
-        if(numb > 1 && numb <= 100){
-            try {
+    }
 
-                MessageHistory history = new MessageHistory(event.getTextChannel());
-                List<Message> msgs;
+    public void action(String[] args, MessageReceivedEvent event) {
 
-                event.getMessage().delete().queue();
 
-                msgs = history.retrievePast(numb).complete();
-                event.getTextChannel().deleteMessages(msgs).queue();
+        try {
+            MessageHistory history = new MessageHistory(event.getTextChannel());
+            List<Message> msgs;
+            if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
+                try {
+                    while (true) {
+                        msgs = history.retrievePast(1).complete();
+                        msgs.get(0).delete().queue();
+                    }
+                } catch (Exception ex) {
+                    //Nichts tun
+                }
 
-                Message msg = event.getTextChannel().sendMessage(
-                        new EmbedBuilder().setColor(Color.CYAN).setDescription(":loudspeaker: Deleted " + args[0] +" messages!").build()
-                ).complete();
+                Message answer = event.getTextChannel().sendMessage(MSGS.success().setDescription(
+                        "Successfully deleted all messages!"
+                ).build()).complete();
 
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        msg.delete().queue();
+                        answer.delete().queue();
                     }
                 }, 3000);
 
-            }catch (Exception e){
-                e.printStackTrace();
+            }else if (args.length < 1 || (args.length > 0 ? getInt(args[0]) : 1) == 1 && (args.length > 0 ? getInt(args[0]) : 1) < 2) {
+
+                event.getMessage().delete().queue();
+                msgs = history.retrievePast(2).complete();
+                msgs.get(0).delete().queue();
+
+                Message answer = event.getTextChannel().sendMessage(MSGS.success().setDescription(
+                        "Successfully deleted last message!"
+                ).build()).complete();
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        answer.delete().queue();
+                    }
+                }, 3000);
+
+            } else if(args.length == 2) {
+                // 24/03/2013 21:54
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                StringBuilder builder = new StringBuilder();
+
+                for (String arg: args) {
+                    builder.append(" " + arg);
+                }
+
+                try
+                {
+                    Date date = simpleDateFormat.parse(builder.toString());
+
+                    boolean weiter = true;
+                    try {
+                        while (weiter) {
+                            msgs = history.retrievePast(1).complete();
+                            if (date.before(Date.from(msgs.get(0).getCreationTime().toZonedDateTime().toInstant()))) {
+                                msgs.get(0).delete().queue();
+                            } else {
+                                weiter = false;
+                            }
+
+                        }
+
+                        Message answer = event.getTextChannel().sendMessage(MSGS.success().setDescription(
+                                "Successfully deleted " + args[0] + " messages!"
+                        ).build()).complete();
+
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                answer.delete().queue();
+                            }
+                        }, 3000);
+                    } catch (Exception ex) {
+                        //Nichts tun
+                    }
+                }
+                catch (ParseException ex)
+                {
+                    event.getTextChannel().sendMessage(MSGS.error()
+                            .addField("Error Type", "Wrong Timeformat.", false)
+                            .addField("Description", "Pleas enter the Time in the right Timeformat:\n" + simpleDateFormat.format(new Date()), false)
+                            .build()
+                    ).queue();
+                }
+
+            } else if (getInt(args[0]) <= 100) {
+
+                event.getMessage().delete().queue();
+                msgs = history.retrievePast(getInt(args[0])).complete();
+                event.getTextChannel().deleteMessages(msgs).queue();
+
+                Message answer = event.getTextChannel().sendMessage(MSGS.success().setDescription(
+                        "Successfully deleted " + args[0] + " messages!"
+                ).build()).complete();
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        answer.delete().queue();
+                    }
+                }, 3000);
+            } else {
+                event.getTextChannel().sendMessage(MSGS.error()
+                        .addField("Error Type", "Message value out of bounds.", false)
+                        .addField("Description", "The entered number if messages can not be more than 100 messages!", false)
+                        .build()
+                ).queue();
             }
-        } else {
-            event.getTextChannel().sendMessage(
-                    error.setDescription(":loudspeaker: Please enter a Number between 2 and 100!").build()
+
+
+        } catch (Exception e) {
+            event.getTextChannel().sendMessage(MSGS.error()
+                    .addField("Error Type", e.getLocalizedMessage(), false)
+                    .addField("Message", e.getMessage(), false)
+                    .build()
             ).queue();
         }
 
     }
 
-    @Override
     public void executed(boolean success, MessageReceivedEvent event) {
 
     }
 
-    @Override
     public String help() {
-        return null;
+        return HELP;
+    }
+
+    @Override
+    public String description() {
+        return "Bulk delete chat messages";
+    }
+
+    @Override
+    public String commandType() {
+        return STATIC.CMDTYPE.chatutils;
+    }
+
+    @Override
+    public int permission() {
+        return 1;
     }
 }

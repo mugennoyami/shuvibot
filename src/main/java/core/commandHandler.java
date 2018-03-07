@@ -2,6 +2,8 @@ package core;
 
 import commands.Command;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 
 /**
@@ -16,7 +18,7 @@ public class commandHandler {
     public static final commandParser parse = new commandParser();
     public static HashMap<String, Command> commands = new HashMap<>();
 
-    public static void handleCommand(commandParser.commandContainer cmd){
+    public static void handleCommand(commandParser.commandContainer cmd) throws IOException, ParseException {
 
         if(commands.containsKey(cmd.invoke)){
 

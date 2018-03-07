@@ -1,17 +1,17 @@
 package core;
 
 import commands.cmdClear;
+import commands.cmdGif;
 import commands.cmdPing;
 import commands.cmdPoke;
 import listeners.commandListener;
 import listeners.readyListener;
-import listeners.voiceListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-import util.SECRETS;
+import utils.SECRETS;
 
 import javax.security.auth.login.LoginException;
 
@@ -53,11 +53,11 @@ public class Main {
         commandHandler.commands.put("ping", new cmdPing());
         commandHandler.commands.put("poke", new cmdPoke());
         commandHandler.commands.put("clear", new cmdClear());
+        commandHandler.commands.put("gif",new cmdGif());
     }
 
     private static void loadListeners(){
         builder.addEventListener(new readyListener());
-        builder.addEventListener(new voiceListener());
         builder.addEventListener(new commandListener());
     }
 

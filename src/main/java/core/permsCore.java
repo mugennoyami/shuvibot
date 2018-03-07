@@ -2,7 +2,7 @@ package core;
 
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import util.STATIC;
+import utils.STATIC;
 
 import java.util.Arrays;
 

@@ -41,4 +41,19 @@ public class cmdPing implements Command{
     public String help() {
         return null;
     }
+
+    @Override
+    public String description() {
+        return null;
+    }
+
+    @Override
+    public String commandType() {
+        return null;
+    }
+
+    @Override
+    public int permission() {
+        return 0;
+    }
 }

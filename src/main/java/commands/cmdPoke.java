@@ -41,6 +41,21 @@ public class cmdPoke implements Command {
         return null;
     }
 
+    @Override
+    public String description() {
+        return null;
+    }
+
+    @Override
+    public String commandType() {
+        return null;
+    }
+
+    @Override
+    public int permission() {
+        return 0;
+    }
+
     public void send(String msg, MessageReceivedEvent event){   event.getTextChannel().sendMessage(msg).queue();}
 
 }
