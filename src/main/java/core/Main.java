@@ -1,5 +1,6 @@
 package core;
 
+import commands.cmdClear;
 import commands.cmdPing;
 import commands.cmdPoke;
 import listeners.commandListener;
@@ -51,6 +52,7 @@ public class Main {
     private static void loadCommands(){
         commandHandler.commands.put("ping", new cmdPing());
         commandHandler.commands.put("poke", new cmdPoke());
+        commandHandler.commands.put("clear", new cmdClear());
     }
 
     private static void loadListeners(){
