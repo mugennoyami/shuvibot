@@ -6,4 +6,4 @@
 
 -Author: Dârkness
 
--Contributors: Galidraking
+-Contributors: Ziroria
