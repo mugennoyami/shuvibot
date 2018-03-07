@@ -1,2 +1,5 @@
-src.main.java.util.SECRETS.class
-SECRETS.class
+# User-specific stuff:
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
+src/main/java/utils/SECRETS.class
